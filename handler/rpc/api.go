@@ -3,23 +3,26 @@ package rpc
 import (
 	"context"
 
-	google_protobuf1 "github.com/golang/protobuf/ptypes/empty"
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/light-service/user/api/v1"
 	"github.com/light-service/user/model/usecase"
 	"google.golang.org/grpc"
 )
 
+func Serve(grpcServer *grpc.Server, ucase usecase.UseCase) {
+	h := &handler{ucase}
+	api.RegisterUserServiceService(grpcServer, &api.UserServiceService{
+		Register:       h.Register,
+		Login:          h.Login,
+		Authenticate:   h.Authenticate,
+		GetUserInfo:    h.GetUserInfo,
+		ModifyUserInfo: h.ModifyUserInfo,
+		ModifyPassword: h.ModifyPassword,
+	})
+}
+
 type handler struct {
 	ucase usecase.UseCase
-}
-
-func Serve(grpcServer *grpc.Server) {
-	handler := newHandler()
-	api.RegisterUserServiceServer(grpcServer, handler)
-}
-
-func newHandler() *handler {
-	return &handler{}
 }
 
 func (h *handler) Register(context context.Context, request *api.RegisterRequest) (*api.RegisterResponse, error) {
@@ -65,20 +68,20 @@ func (h *handler) GetUserInfo(context context.Context, request *api.GetUserInfoR
 	return adapterProtoUserInfo(userInfo), nil
 }
 
-func (h *handler) ModifyUserInfo(context context.Context, request *api.ModifyUserInfoRequest) (*google_protobuf1.Empty, error) {
+func (h *handler) ModifyUserInfo(context context.Context, request *api.ModifyUserInfoRequest) (*empty.Empty, error) {
 	err := h.ucase.ModifyUserInfo(request.GetFirstName(), request.GetLastName(), request.GetPhone(), request.GetEmail(), int(request.GetUserId()))
 	if err != nil {
 		return nil, err
 	}
 
-	return &google_protobuf1.Empty{}, nil
+	return &empty.Empty{}, nil
 }
 
-func (h *handler) ModifyPassword(context context.Context, request *api.ModifyPasswordRequest) (*google_protobuf1.Empty, error) {
+func (h *handler) ModifyPassword(context context.Context, request *api.ModifyPasswordRequest) (*empty.Empty, error) {
 	err := h.ucase.ModifyPassword(request.GetNewPassword(), request.GetOldPassword(), int(request.GetUserId()))
 	if err != nil {
 		return nil, err
 	}
 
-	return &google_protobuf1.Empty{}, nil
+	return &empty.Empty{}, nil
 }

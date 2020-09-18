@@ -19,4 +19,3 @@ func adapterUserInfo(info *api.UserInfo) *UserInfo {
 		LastLogin: api.Time(api.AdapterTime(info.LastLogin)),
 	}
 }
-

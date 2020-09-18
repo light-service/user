@@ -19,8 +19,6 @@ WORKDIR /app
 RUN mkdir -p /app/ /app/migrations/ /data/
 COPY --from=build-env /root/user/migrations /app/migrations
 COPY --from=build-env /root/user/main /app/
-COPY deploy/start.sh /app/
-COPY deploy/clean_log.sh /app/
 RUN chmod +x /app/main
-RUN chmod +x /app/start.sh
-RUN chmod +x /app/clean_log.sh
+
+ENTRYPOINT /app/main

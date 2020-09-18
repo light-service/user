@@ -2,12 +2,12 @@ package client
 
 import (
 	"context"
-	"google.golang.org/grpc/keepalive"
 	"time"
 
 	"github.com/light-service/user/api/v1"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/keepalive"
 )
 
 type userServiceClientImpl struct {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/light-service/user/handler/rpc"
+	"github.com/light-service/user/model/usecase"
 	"github.com/light-service/user/utils"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -29,9 +30,11 @@ func main() {
 	grpcLogFile := openFile(filepath.Join(dataPath, "grpc.log"))
 	defer grpcLogFile.Close()
 
+	ucase := usecase.New()
+
 	configLog(mainLogFile, logLevel)
 	rpc.ServeGRPC(grpcPort, grpcLogFile, func(grpcServer *grpc.Server) {
-		rpc.Serve(grpcServer)
+		rpc.Serve(grpcServer, ucase)
 	})
 }
 

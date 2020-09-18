@@ -1,8 +1,9 @@
 package api
 
 import (
-	google_protobuf "github.com/golang/protobuf/ptypes/timestamp"
 	"time"
+
+	"github.com/golang/protobuf/ptypes/timestamp"
 )
 
 func Time(t *time.Time) time.Time {
@@ -12,7 +13,7 @@ func Time(t *time.Time) time.Time {
 	return *t
 }
 
-func AdapterTime(t *google_protobuf.Timestamp) *time.Time {
+func AdapterTime(t *timestamp.Timestamp) *time.Time {
 	if t == nil {
 		return nil
 	}
@@ -20,11 +21,11 @@ func AdapterTime(t *google_protobuf.Timestamp) *time.Time {
 	return &t0
 }
 
-func AdapterProtoTime(t *time.Time) *google_protobuf.Timestamp {
+func AdapterProtoTime(t *time.Time) *timestamp.Timestamp {
 	if t == nil {
 		return nil
 	}
-	return &google_protobuf.Timestamp{
+	return &timestamp.Timestamp{
 		Seconds: t.Unix(),
 		Nanos:   int32(t.Nanosecond()),
 	}

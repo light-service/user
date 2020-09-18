@@ -1,10 +1,10 @@
 -- +goose Up
 CREATE TABLE `user` (
   `id`             bigint(20)    NOT NULL AUTO_INCREMENT,
-  `username`       varchar(50)  NOT NULL,
+  `username`       varchar(50)   NOT NULL,
   `first_name`     varchar(100)  NOT NULL,
   `last_name`      varchar(100)  NOT NULL,
-  `phone`          varchar(32)  NOT NULL,
+  `phone`          varchar(32)   NOT NULL,
   `email`          varchar(100)  NOT NULL,
   `password`       varchar(128)  NOT NULL,
   `last_login_at`  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
