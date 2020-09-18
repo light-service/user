@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package light.services.user.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "api";
+
+service UserService {
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+    rpc Login (LoginRequest) returns (LoginResponse);
+    rpc Authenticate (AuthenticateRequest) returns (AuthenticateResponse);
+
+    rpc GetUserInfo (GetUserInfoRequest) returns (UserInfo);
+    rpc ModifyUserInfo (ModifyUserInfoRequest) returns (google.protobuf.Empty);
+    rpc ModifyPassword (ModifyPasswordRequest) returns (google.protobuf.Empty);
+}
+
+message UserInfo {
+    int64 id = 1;
+    string username = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string phone = 5;
+    string email = 6;
+    google.protobuf.Timestamp last_login = 7;
+}
+
+message RegisterRequest {
+    string username = 1;
+    string password = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string phone = 5;
+    string email = 6;
+}
+
+message RegisterResponse {
+    int64 user_id = 1;
+}
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+    string ip = 3;
+    google.protobuf.Timestamp expire_at = 4;
+}
+
+message LoginResponse {
+    string token = 1;
+    google.protobuf.Timestamp expire_at = 2;
+}
+
+message AuthenticateRequest {
+    string token = 1;
+}
+
+message AuthenticateResponse {
+    int64 user_id = 1;
+}
+
+message GetUserInfoRequest {
+    int64 user_id = 1;
+}
+
+message ModifyUserInfoRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string phone = 3;
+    string email = 4;
+    int64 user_id = 5;
+}
+
+message ModifyPasswordRequest {
+    string new_password = 1;
+    string old_password = 2;
+    int64 user_id = 3;
+}
+
